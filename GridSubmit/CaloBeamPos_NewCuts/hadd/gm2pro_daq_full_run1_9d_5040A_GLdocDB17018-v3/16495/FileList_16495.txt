@@ -1,0 +1,7 @@
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00005.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00006.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00007.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00008.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00009.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00010.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/16495/caloBeamPositionPlots_16495.00011.root

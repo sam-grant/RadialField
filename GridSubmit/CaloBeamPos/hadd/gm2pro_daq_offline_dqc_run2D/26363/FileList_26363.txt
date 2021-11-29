@@ -1,0 +1,8 @@
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00000.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00001.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00002.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00003.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00004.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00006.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00007.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26363/caloBeamPositionPlots_26363.00008.root

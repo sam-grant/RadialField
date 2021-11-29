@@ -1,0 +1,17 @@
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00041.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00042.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00043.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00044.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00045.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00046.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00047.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00048.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00049.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00050.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00051.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00052.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00053.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00056.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00057.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00058.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/26079/caloBeamPositionPlots_26079.00059.root

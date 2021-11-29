@@ -1,0 +1,135 @@
+void FancyDraw(TH1F *hist, string  title, string fname) { 
+
+  TCanvas *c = new TCanvas("c","c",800,600);
+
+  hist->SetTitle(title.c_str());
+
+  //hist->SetStats(0);
+  gStyle->SetOptStat(2210);
+      
+  hist->GetXaxis()->SetTitleSize(.04);
+  hist->GetYaxis()->SetTitleSize(.04);
+  hist->GetXaxis()->SetTitleOffset(1.1);
+  hist->GetYaxis()->SetTitleOffset(1.1);
+  hist->GetXaxis()->CenterTitle(1);
+  hist->GetYaxis()->CenterTitle(1);
+  hist->GetYaxis()->SetMaxDigits(4);
+  //hist->SetLineWidth(3);
+  hist->SetLineColor(1);
+
+  //c->SetRightMargin(0.13);
+
+  hist->Draw("HIST");
+  
+  c->SaveAs((fname+".C").c_str());
+  c->SaveAs((fname+".pdf").c_str());
+  c->SaveAs((fname+".png").c_str());
+
+  delete c;
+
+  return;
+
+
+} 
+
+void ReadCaloSimTree() {
+
+  //  TFile *file = TFile::Open("../TestTrees/Fatemi_beamGun_4001_forSam.root");
+  TFile *file = TFile::Open("../TestTrees/gm2calo_ana.root");
+
+  TTree *tree = (TTree*)file->Get("caloSimTrees/tree");
+
+  if (!tree) {
+    cout << "Error: tree not found." << endl;
+    delete file;
+    return;
+  }
+
+  std::vector<Float_t> caloHitEnergy;
+  std::vector<Float_t> caloHitTime;
+  std::vector<Float_t> caloHitY; 
+  Int_t ctag; 
+  Int_t tot_ctag = 0;
+  Int_t counter = 0; 
+
+  tree->SetBranchAddress("caloHitEnergy",&caloHitEnergy);
+  tree->SetBranchAddress("caloHitTime",&caloHitTime);
+  tree->SetBranchAddress("caloHitY",&caloHitY);
+  tree->SetBranchAddress("ctag",&ctag);
+
+  TH1F *h_caloHitEnergy = new TH1F("h_caloHitEnergy","h_caloHitEnergy",128,0,3200); // Taken from track momentum binning
+  TH1F *h_caloHitY = new TH1F("h_caloHitY", ";y [mm];Clusters", 150, -75, 75);
+
+
+  Long64_t nEvents = tree->GetEntries();
+
+  for (Long64_t i_event=0; i_event<nEvents; i_event++) {
+
+    tree->GetEvent(i_event);
+    tot_ctag = tot_ctag + ctag;
+
+    for (int i_clu = 0; i_clu < caloHitEnergy.size(); i_clu++) { 
+      
+      if(caloHitEnergy.at(i_clu) > 1700 && caloHitEnergy.at(i_clu) < 6000 && caloHitTime.at(i_clu) > 24000) { 
+
+	h_caloHitEnergy->Fill(caloHitEnergy.at(i_clu));
+	h_caloHitY->Fill(caloHitY.at(i_clu));
+	++counter;
+      }
+
+    }
+
+  }
+
+  FancyDraw(h_caloHitEnergy, ";Calo hit energy [MeV];Entries", "../Images/TestJobs/Fatemi_beamGun_4001_forSam/h_caloHitEnergy");
+  FancyDraw(h_caloHitY, ";Calo hit Y [mm];Entries", "../Images/TestJobs/Fatemi_beamGun_4001_forSam/h_caloHitY");
+
+  cout<<"CTAGS:\t"<<tot_ctag<<endl;
+  cout<<"CTAGS (check):\t"<<counter<<endl;
+  //  h_caloHitEnergy->GetYaxis()->SetRangeUser(0, 20e3);
+
+  //  FancyDraw(h_caloHitEnergy, ";Calo hit energy [MeV];Entries", "../Images/TestJobs/Fatemi_beamGun_4001_forSam/h_caloHitEnergy_20e3");
+
+  return;
+
+
+
+}
+
+
+/*
+
+  // tree->Print();
+
+  Float_t decayExtrapolatedDistance;
+  Float_t caloExtrapolatedDistance;
+
+  tree->SetBranchAddress("decayExtrapolatedDistance",&decayExtrapolatedDistance);
+  tree->SetBranchAddress("caloExtrapolatedDistance",&caloExtrapolatedDistance);
+
+  TH1F *h_decayExtrapolatedDistance = new TH1F("h_decayExtrapolatedDistance","h_decayExtrapolatedDistance",1000, 0, 7000);
+  TH1F *h_caloExtrapolatedDistance = new TH1F("h_caloExtrapolatedDistance","h_caloExtrapolatedDistance",1000, 0, 1500);
+
+  Long64_t nEntries = tree->GetEntries();
+
+  for (Long64_t i_event=0; i_event<nEntries; i_event++) {
+
+    tree->GetEvent(i_event);
+
+    h_decayExtrapolatedDistance->Fill(decayExtrapolatedDistance);
+    h_caloExtrapolatedDistance->Fill(caloExtrapolatedDistance);
+
+  }
+
+  TCanvas *c1 = new TCanvas("c1","c1",800,600);
+  h_caloExtrapolatedDistance->Draw("HIST");
+  c1->SaveAs("h_caloExtrapolatedDistance.png");
+
+  TCanvas *c2 = new TCanvas("c2","c2",800,600);
+  h_decayExtrapolatedDistance->Draw("HIST");
+  c2->SaveAs("h_decayExtrapolatedDistance.png");
+
+  return;
+}
+
+*/

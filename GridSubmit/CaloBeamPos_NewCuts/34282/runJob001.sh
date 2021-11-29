@@ -1,0 +1,62 @@
+# Setup stuff to copy files back and forth
+source /cvmfs/fermilab.opensciencegrid.org/products/common/etc/setups
+source /cvmfs/fermilab.opensciencegrid.org/products/larsoft/setup
+setup ifdhc
+
+# Copy xrootdFileList001 here
+if [ ! -z "`ifdh ls /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/xrootdFileList001.txt`" ]; then
+  ifdh cp /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/xrootdFileList001.txt xrootdFileList001.txt
+else 
+  echo "/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/xrootdFileList001.txt does not exist"
+fi
+
+# Copy fcl and so files
+if [ ! -z "`ifdh ls /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/RunCaloBeamPositionPlots_Run23.fcl`" ]; then
+  ifdh cp /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/RunCaloBeamPositionPlots_Run23.fcl ./RunCaloBeamPositionPlots_Run23.fcl
+else 
+  echo "/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/RunCaloBeamPositionPlots_Run23.fcldoes not exist"
+fi
+if [ ! -z "`ifdh ls /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/libgm2analyses_EDM_analyzers_CaloBeamPositionPlots_module.so`" ]; then
+  ifdh cp /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/libgm2analyses_EDM_analyzers_CaloBeamPositionPlots_module.so ./libgm2analyses_EDM_analyzers_CaloBeamPositionPlots_module.so
+else 
+  echo "/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/libgm2analyses_EDM_analyzers_CaloBeamPositionPlots_module.so does not exist"
+fi
+
+# Setup gm2
+source /cvmfs/gm2.opensciencegrid.org/prod/g-2/setup
+setup gm2 v9_63_00 -q prof
+
+# Add current directory to LD_LIBRARY_PATH for so file we copied
+export LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH
+
+# Some nodes have newer kernels
+case 3.10.0-1160.15.2.el7.x86_64 in
+  3.*) export UPS_OVERRIDE="-H Linux64bit+2.6-2.12";;
+  4.*) export UPS_OVERRIDE="-H Linux64bit+2.6-2.12";;
+esac
+
+# Run jobs
+while read file; do 
+
+  echo "Processing $file"
+
+  subRun=${file##*_}
+  subRun=${subRun%.*}
+  subRun=${subRun#*.}
+
+  # Update input file names in fcl file
+  echo "" >> RunCaloBeamPositionPlots_Run23.fcl
+  echo "source.fileNames: [ \"$file\" ]" >> RunCaloBeamPositionPlots_Run23.fcl
+
+  gm2 -c RunCaloBeamPositionPlots_Run23.fcl -T caloBeamPositionPlots_34282.${subRun}.root
+
+  # Only copy back if job completed successfully (output from last command was 0)
+  if [ $? -eq 0 ]; then
+    if [ -f caloBeamPositionPlots_34282.${subRun}.root ]; then
+      ifdh mv caloBeamPositionPlots_34282.${subRun}.root /pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_offline_dqc_run3N_5207A/34282/caloBeamPositionPlots_34282.${subRun}.root
+    else 
+      echo "caloBeamPositionPlots_34282.${subRun}.root does not exist.  ls reads:"
+      ls
+    fi
+  fi
+done < xrootdFileList001.txt

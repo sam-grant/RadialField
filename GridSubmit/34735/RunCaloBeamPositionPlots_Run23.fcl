@@ -1,0 +1,75 @@
+// Produce histograms for calo y-position
+
+// Sam Grant - Feb 2021
+
+// ./gridSetupAndSubmitGM2Data.sh --daq --ana --fhiclFile=/<path>/RunCaloBeamPositionPlots.fcl --localArea --output-dir=/pnfs/GM2/scratch/users/<user>/<dir> --sam-dataset=gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2 --njobs=250 --lifetime=6h
+
+
+process_name : ana 
+  
+//-----------------------------------------------
+  
+source : {
+  
+  module_type : RootInput
+  maxEvents   : -1
+  inputCommands : [ "keep *",
+    "drop gm2strawtracker*_*_*_*",
+    "keep gm2strawtracker::StrawDigitArtRecords_digitizer_straws_caloReco"
+  ]
+
+}
+  
+//-----------------------------------------------
+
+services : 
+{
+   message: {
+      debugModules : ["*"]
+      suppressInfo : []
+        
+      destinations: {
+         LogToFile: {
+            append    : false
+            filename  : "gm2calo_ana.log"
+            threshold : "INFO"
+            type      : "file"
+         }
+      }
+   }
+
+   scheduler: {
+      errorOnFailureToPut: false
+   }
+
+   TFileService : {
+      fileName : "gm2calo_ana.root"
+   }
+}
+
+//-----------------------------------------------
+  
+physics : {
+  
+  analyzers : { 
+   
+    caloBeamPositionPlots : {
+  
+      module_type : CaloBeamPositionPlots
+      clusterModuleLabel : hitClusterDAQ
+      clusterInstanceLabel : cluster
+      //SelectEvents : ["offline:muonPathWithDQC"] // this one doesn't work
+      //SelectEvents : ["offline:muonPath"] // Run-1
+      SelectEvents : ["caloReco:muonPathWithDQC"] // Runs 2&3
+      eMin : 0 
+      eMax : 6000
+      tMin : 0
+    }
+
+  } // analyzers  
+   
+  // Define paths/streams
+  plotPath : [ caloBeamPositionPlots ]  
+  end_paths     : [ plotPath ]
+  
+}

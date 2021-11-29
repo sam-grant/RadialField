@@ -1,0 +1,3 @@
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run3O_5207A/34739/caloBeamPositionPlots_34739.00259.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run3O_5207A/34739/caloBeamPositionPlots_34739.00260.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos/gm2pro_daq_offline_dqc_run3O_5207A/34739/caloBeamPositionPlots_34739.00261.root

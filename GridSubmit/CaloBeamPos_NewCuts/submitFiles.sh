@@ -1,0 +1,187 @@
+fclFile="RunCaloBeamPositionPlots_Run23.fcl"
+#fclFile="RunCaloBeamPositionPlots_Run1.fcl"
+soFile="libgm2analyses_EDM_analyzers_CaloBeamPositionPlots_module.so" 
+
+#Make sure there weren't any arguments passed
+if [ $# -ne 1 ]; then
+  echo "$# arguments supplied, one allowed."
+  return
+fi
+
+# Get dataset name
+dataset=$1
+
+#Make sure file exists
+if [ ! -f FileList.txt ] || [ `cat FileList.txt | wc -l` -eq 0 ]; then
+  echo "Input file list \"FileList.txt\" is required.  This was not found or has 0 entries"
+  return
+fi
+
+# Get run
+for file in `head -n 1 FileList.txt`; do
+  # Get run number from file
+  run=${file##*full_}
+  run=${run##*_}
+  run=${run%%.*}
+done
+
+# Make output directory
+pnfsOutDir=/pnfs/GM2/scratch/users/${USER}/BrAna/CaloBeamPos_NewCuts/${dataset}/${run}
+if [ ! -d $pnfsOutDir ]; then
+  mkdir -p $pnfsOutDir
+  chmod -R g+w $pnfsOutDir
+  echo "Output files will appear in $pnfsOutDir"
+fi
+
+rm -f NewFileList.txt && touch NewFileList.txt
+
+# Make sure that there's not already an output file that we'd overwrite, if there is, remove it 
+while read file; do 
+
+  # Strip everything before last _, then extract middle of run.subrun.root
+  subRun=${file##*_}
+  subRun=${subRun%.*}
+  subRun=${subRun#*.}
+
+  if [ -f ${pnfsOutDir}/caloBeamPositionPlots_${run}.${subRun}.root ]; then 
+    echo "${pnfsOutDir}/caloBeamPositionPlots_${run}.${subRun}.root already exists and would be overwritten. Removing file from list. "
+  else
+    echo $file >> NewFileList.txt
+  fi
+
+done < FileList.txt
+
+a=`cat FileList.txt | wc -l`
+b=`cat NewFileList.txt | wc -l`
+
+if [ "$a" -eq "$b" ]; then
+  echo "No possible overwrites found for this sub-run."
+  rm -r NewFileList.txt
+else
+  echo "Overwrites found for this sub-run! Using modified list."
+  mv NewFileList.txt FileList.txt
+fi
+
+# Copy fcl & .so file to pnfs so we can get it from grid jobs
+if [ -f ${pnfsOutDir}/${fclFile} ]; then
+  rm -f ${pnfsOutDir}/${fclFile} 
+fi
+if [ -f ${pnfsOutDir}/${soFile} ]; then
+  rm -f ${pnfsOutDir}/${soFile}
+fi
+
+sleep 5
+
+ifdh cp ${fclFile} ${pnfsOutDir}/${fclFile}
+ifdh cp ${soFile} ${pnfsOutDir}/${soFile}
+echo "Copied ${fclFile} and ${soFile} to $pnfsOutDir"
+
+# Split into lists wit 250 each (and submit one of these each time)
+rm -f SplitFileList*
+split FileList.txt -l 200 -a 3 -d SplitFileList
+for file in `ls SplitFileList*`; do 
+  mv $file ${file}.txt
+done
+
+for file in `ls SplitFileList*`; do 
+  fileNum=${file##SplitFileList}
+  fileNum=${fileNum%.txt}
+  rm -f xrootdFileList${fileNum}.txt && touch xrootdFileList${fileNum}.txt
+  while read file; do
+    # Strip /pnfs/ from file names and write into new file
+    longFileName=${file#/pnfs/*}
+    echo root://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/${longFileName} >> xrootdFileList${fileNum}.txt
+  done < $file
+  # Copy filelist, fcl & .so file to pnfs so we can get it from grid jobs
+  if [ -f ${pnfsOutDir}/xrootdFileList${fileNum}.txt ]; then
+    rm -f ${pnfsOutDir}/xrootdFileList${fileNum}.txt 
+  fi
+  ifdh cp xrootdFileList${fileNum}.txt ${pnfsOutDir}/xrootdFileList${fileNum}.txt
+  echo "Copied xrootdFileList${fileNum} to $pnfsOutDir"
+
+# Make script that we'll want to run on the grid
+cat <<EOF > runJob${fileNum}.sh
+# Setup stuff to copy files back and forth
+source /cvmfs/fermilab.opensciencegrid.org/products/common/etc/setups
+source /cvmfs/fermilab.opensciencegrid.org/products/larsoft/setup
+setup ifdhc
+
+# Copy xrootdFileList${fileNum} here
+if [ ! -z "\`ifdh ls ${pnfsOutDir}/xrootdFileList${fileNum}.txt\`" ]; then
+  ifdh cp ${pnfsOutDir}/xrootdFileList${fileNum}.txt xrootdFileList${fileNum}.txt
+else 
+  echo "${pnfsOutDir}/xrootdFileList${fileNum}.txt does not exist"
+fi
+
+# Copy fcl and so files
+if [ ! -z "\`ifdh ls ${pnfsOutDir}/${fclFile}\`" ]; then
+  ifdh cp ${pnfsOutDir}/${fclFile} ./${fclFile}
+else 
+  echo "${pnfsOutDir}/${fclFile}does not exist"
+fi
+if [ ! -z "\`ifdh ls ${pnfsOutDir}/${soFile}\`" ]; then
+  ifdh cp ${pnfsOutDir}/${soFile} ./${soFile}
+else 
+  echo "${pnfsOutDir}/${soFile} does not exist"
+fi
+
+# Setup gm2
+source /cvmfs/gm2.opensciencegrid.org/prod/g-2/setup
+setup gm2 v9_63_00 -q prof
+
+# Add current directory to LD_LIBRARY_PATH for so file we copied
+export LD_LIBRARY_PATH=\`pwd\`:\$LD_LIBRARY_PATH
+
+# Some nodes have newer kernels
+case `uname -r` in
+  3.*) export UPS_OVERRIDE="-H Linux64bit+2.6-2.12";;
+  4.*) export UPS_OVERRIDE="-H Linux64bit+2.6-2.12";;
+esac
+
+# Run jobs
+while read file; do 
+
+  echo "Processing \$file"
+
+  subRun=\${file##*_}
+  subRun=\${subRun%.*}
+  subRun=\${subRun#*.}
+
+  # Update input file names in fcl file
+  echo "" >> ${fclFile}
+  echo "source.fileNames: [ \"\$file\" ]" >> ${fclFile}
+
+  gm2 -c ${fclFile} -T caloBeamPositionPlots_${run}.\${subRun}.root
+
+  # Only copy back if job completed successfully (output from last command was 0)
+  if [ \$? -eq 0 ]; then
+    if [ -f caloBeamPositionPlots_${run}.\${subRun}.root ]; then
+      ifdh mv caloBeamPositionPlots_${run}.\${subRun}.root ${pnfsOutDir}/caloBeamPositionPlots_${run}.\${subRun}.root
+    else 
+      echo "caloBeamPositionPlots_${run}.\${subRun}.root does not exist.  ls reads:"
+      ls
+    fi
+  fi
+done < xrootdFileList${fileNum}.txt
+EOF
+
+  if [ -f ${pnfsOutDir}/runJob${fileNum}.sh ]; then
+    rm -f ${pnfsOutDir}/runJob${fileNum}.sh
+  fi
+
+  ifdh cp runJob${fileNum}.sh ${pnfsOutDir}/runJob${fileNum}.sh
+
+  while [ ! -f ${pnfsOutDir}/runJob${fileNum}.sh ]; do
+    echo "${pnfsOutDir}/runJob${fileNum}.sh not found after ifdh cp.  Sleeping 5..."
+    sleep 5
+  done
+
+  echo "Running submission"
+
+  jobsub_submit -N 1 -G gm2 --OS=SL7 --resource-provides=usage_model=DEDICATED,OPPORTUNISTIC --expected-lifetime=8h --role=Analysis file://${pnfsOutDir}/runJob${fileNum}.sh
+   
+  rm -f runJob${fileNum}.sh
+  rm -f xrootdFileList${fileNum}.txt
+  rm -f SplitFileList${fileNum}.txt
+
+done

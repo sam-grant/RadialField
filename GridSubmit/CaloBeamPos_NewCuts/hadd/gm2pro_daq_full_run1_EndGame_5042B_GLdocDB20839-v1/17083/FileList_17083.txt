@@ -1,0 +1,4 @@
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17083/caloBeamPositionPlots_17083.00005.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17083/caloBeamPositionPlots_17083.00009.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17083/caloBeamPositionPlots_17083.00010.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17083/caloBeamPositionPlots_17083.00023.root

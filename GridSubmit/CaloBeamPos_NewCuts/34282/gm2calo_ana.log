@@ -1,0 +1,4 @@
+%MSG-i MF_INIT_OK:  Early 03-May-2021 14:46:07 CDT JobSetup
+Messagelogger initialization complete.
+%MSG
+03-May-2021 14:46:11 CDT  Initiating request to open input file "/pnfs/GM2/daq/run3/offline/gm2_5207A/runs_34000/34282/gm2offline_final_40349598_34282.00188.root"

@@ -1,0 +1,1 @@
+jobsub_rm -G gm2 --user=YYY --constraint '(JobStatus=?=5)'

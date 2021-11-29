@@ -1,0 +1,14 @@
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00052.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00053.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00054.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00055.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00056.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00057.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00058.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00059.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00060.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00061.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00062.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00063.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00064.root
+/pnfs/GM2/scratch/users/sgrant/BrAna/CaloBeamPos_NewCuts/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/17333/caloBeamPositionPlots_17333.00065.root
