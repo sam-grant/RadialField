@@ -1,0 +1,2 @@
+ifdbprod.fnal.gov:5452:gm2_online_prod:gm2_reader:gm2_4_reader
+ifdbdev.fnal.gov:5445:gm2_conditions_dev:gm2_reader:gm2_4_reader
