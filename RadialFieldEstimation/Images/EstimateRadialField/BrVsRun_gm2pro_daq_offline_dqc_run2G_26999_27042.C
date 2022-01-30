@@ -1,7 +1,7 @@
 void BrVsRun_gm2pro_daq_offline_dqc_run2G_26999_27042()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Thu Jan 13 02:56:12 2022) by ROOT version 6.12/04
+//=========  (Sun Jan 30 09:48:11 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(26988.25,-4,27052.75,6);
@@ -23,16 +23,16 @@ void BrVsRun_gm2pro_daq_offline_dqc_run2G_26999_27042()
    27041,
    27042};
    Double_t Graph0_fy1003[10] = {
-   18.36042,
-   15.69541,
-   15.18525,
-   14.81574,
-   15.20746,
-   14.83468,
-   14.91069,
-   14.58929,
-   14.08407,
-   13.7394};
+   16.81408,
+   14.36835,
+   13.90016,
+   13.56105,
+   13.92054,
+   13.57844,
+   13.64819,
+   13.35324,
+   12.88958,
+   12.57327};
    Double_t Graph0_fex1003[10] = {
    0,
    0,
@@ -45,16 +45,16 @@ void BrVsRun_gm2pro_daq_offline_dqc_run2G_26999_27042()
    0,
    0};
    Double_t Graph0_fey1003[10] = {
-   4.714681,
-   4.646601,
-   4.641031,
-   4.636435,
-   4.643253,
-   4.637601,
-   4.637693,
-   4.635446,
-   4.627616,
-   4.623587};
+   4.293031,
+   4.237213,
+   4.233204,
+   4.229741,
+   4.235199,
+   4.230774,
+   4.230705,
+   4.229279,
+   4.223034,
+   4.219937};
    TGraphErrors *gre = new TGraphErrors(10,Graph0_fx1003,Graph0_fy1003,Graph0_fex1003,Graph0_fey1003);
    gre->SetName("Graph0");
    gre->SetTitle(";Run number;#LTB_{r}#GT [ppm]");
@@ -107,16 +107,16 @@ void BrVsRun_gm2pro_daq_offline_dqc_run2G_26999_27042()
    27041,
    27042};
    Double_t Graph1_fy1004[10] = {
-   18.36042,
-   15.69541,
-   15.18525,
-   14.81574,
-   15.20746,
-   14.83468,
-   14.91069,
-   14.58929,
-   14.08407,
-   13.7394};
+   16.81408,
+   14.36835,
+   13.90016,
+   13.56105,
+   13.92054,
+   13.57844,
+   13.64819,
+   13.35324,
+   12.88958,
+   12.57327};
    Double_t Graph1_fex1004[10] = {
    0,
    0,
@@ -129,16 +129,16 @@ void BrVsRun_gm2pro_daq_offline_dqc_run2G_26999_27042()
    0,
    0};
    Double_t Graph1_fey1004[10] = {
-   0.6450019,
-   0.1005043,
-   0.1053154,
-   0.0875508,
-   0.1744952,
-   0.1301965,
-   0.09583663,
-   0.1553902,
-   0.08674548,
-   0.1033769};
+   0.5919327,
+   0.09223502,
+   0.09665033,
+   0.08034734,
+   0.1601382,
+   0.1194843,
+   0.08795143,
+   0.1426051,
+   0.07960828,
+   0.09487133};
    gre = new TGraphErrors(10,Graph1_fx1004,Graph1_fy1004,Graph1_fex1004,Graph1_fey1004);
    gre->SetName("Graph1");
    gre->SetTitle("Graph");
@@ -149,8 +149,8 @@ void BrVsRun_gm2pro_daq_offline_dqc_run2G_26999_27042()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1004 = new TH1F("Graph_Graph1004","Graph",100,26994.7,27046.3);
-   Graph_Graph1004->SetMinimum(13.09908);
-   Graph_Graph1004->SetMaximum(19.54236);
+   Graph_Graph1004->SetMinimum(11.98564);
+   Graph_Graph1004->SetMaximum(17.89878);
    Graph_Graph1004->SetDirectory(0);
    Graph_Graph1004->SetStats(0);
 

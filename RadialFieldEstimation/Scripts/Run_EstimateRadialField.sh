@@ -8,6 +8,7 @@ for list in `ls ../txt/gm2*txt`; do
 	cd ../CMacros
 
 	./EstimateRadialField.exe $dataset
+	# ./PrintUncertainties.exe $dataset
 
 	cd ../Scripts
 done

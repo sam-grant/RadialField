@@ -1,10 +1,10 @@
 void grDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Fri Jul  2 05:18:54 2021) by ROOT version 6.12/04
+//=========  (Thu Jan 27 10:11:36 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
-   c->Range(-3.15,-1.09697,28.35,1.190186);
+   c->Range(-3.024,-1.09697,27.216,1.190186);
    c->SetFillColor(0);
    c->SetBorderMode(0);
    c->SetBorderSize(2);
@@ -109,7 +109,7 @@ void grDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    0.007761342};
    TGraphErrors *gre = new TGraphErrors(23,Graph0_fx1003,Graph0_fy1003,Graph0_fex1003,Graph0_fey1003);
    gre->SetName("Graph0");
-   gre->SetTitle(";Calo number;(#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-4} #minus (#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-1a} [mm]");
+   gre->SetTitle(";n;#Delta(#LTy_{n}#GT #minus #LTy_{n+1}#GT) [mm]");
    gre->SetFillStyle(1000);
    gre->SetMarkerStyle(20);
    
@@ -123,13 +123,14 @@ void grDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    TColor *color; // for color definition with alpha
    ci = TColor::GetColor("#000099");
    Graph_Graph1003->SetLineColor(ci);
-   Graph_Graph1003->GetXaxis()->SetTitle("Calo number");
+   Graph_Graph1003->GetXaxis()->SetTitle("n");
+   Graph_Graph1003->GetXaxis()->SetRange(1,96);
    Graph_Graph1003->GetXaxis()->CenterTitle(true);
    Graph_Graph1003->GetXaxis()->SetLabelFont(42);
    Graph_Graph1003->GetXaxis()->SetLabelSize(0.035);
    Graph_Graph1003->GetXaxis()->SetTitleOffset(1.1);
    Graph_Graph1003->GetXaxis()->SetTitleFont(42);
-   Graph_Graph1003->GetYaxis()->SetTitle("(#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-4} #minus (#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-1a} [mm]");
+   Graph_Graph1003->GetYaxis()->SetTitle("#Delta(#LTy_{n}#GT #minus #LTy_{n+1}#GT) [mm]");
    Graph_Graph1003->GetYaxis()->CenterTitle(true);
    Graph_Graph1003->GetYaxis()->SetNdivisions(4000510);
    Graph_Graph1003->GetYaxis()->SetLabelFont(42);

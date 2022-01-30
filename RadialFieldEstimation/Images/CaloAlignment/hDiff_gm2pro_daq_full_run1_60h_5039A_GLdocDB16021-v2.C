@@ -1,7 +1,7 @@
 void hDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Fri Jul  2 05:18:54 2021) by ROOT version 6.12/04
+//=========  (Thu Jan 27 10:11:36 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(0,0,1,1);
@@ -10,30 +10,28 @@ void hDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    c->SetBorderSize(2);
    c->SetFrameBorderMode(0);
    
-   TH1D *hist__1 = new TH1D("hist__1","",20,-1,1);
-   hist__1->SetBinContent(3,1);
-   hist__1->SetBinContent(6,1);
-   hist__1->SetBinContent(7,3);
+   TH1D *hist__1 = new TH1D("hist__1","",30,-1.5,1.5);
    hist__1->SetBinContent(8,1);
-   hist__1->SetBinContent(9,4);
-   hist__1->SetBinContent(10,2);
-   hist__1->SetBinContent(11,2);
-   hist__1->SetBinContent(12,2);
-   hist__1->SetBinContent(13,4);
-   hist__1->SetBinContent(15,1);
-   hist__1->SetBinContent(16,1);
-   hist__1->SetBinContent(19,1);
+   hist__1->SetBinContent(11,1);
+   hist__1->SetBinContent(12,3);
+   hist__1->SetBinContent(13,1);
+   hist__1->SetBinContent(14,4);
+   hist__1->SetBinContent(15,2);
+   hist__1->SetBinContent(16,2);
+   hist__1->SetBinContent(17,2);
+   hist__1->SetBinContent(18,4);
+   hist__1->SetBinContent(20,1);
+   hist__1->SetBinContent(21,1);
+   hist__1->SetBinContent(24,1);
    hist__1->SetEntries(23);
    hist__1->SetStats(0);
-   hist__1->SetFillColor(1);
-   hist__1->SetFillStyle(3001);
-   hist__1->GetXaxis()->SetTitle("(#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-4} #minus (#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-1a} [mm]");
+   hist__1->GetXaxis()->SetTitle("#Delta(#LTy_{n}#GT #minus #LTy_{n+1}#GT) [mm]");
    hist__1->GetXaxis()->CenterTitle(true);
    hist__1->GetXaxis()->SetLabelFont(42);
    hist__1->GetXaxis()->SetLabelSize(0.035);
    hist__1->GetXaxis()->SetTitleOffset(1.1);
    hist__1->GetXaxis()->SetTitleFont(42);
-   hist__1->GetYaxis()->SetTitle("Calos / 0.1 mm");
+   hist__1->GetYaxis()->SetTitle("Calorimeters / 0.1 mm");
    hist__1->GetYaxis()->CenterTitle(true);
    hist__1->GetYaxis()->SetNdivisions(4000510);
    hist__1->GetYaxis()->SetLabelFont(42);
@@ -50,11 +48,8 @@ void hDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    pt->SetFillColor(0);
    pt->SetTextAlign(33);
    pt->SetTextFont(44);
-   pt->SetTextSize(20);
-   TText *pt_LaTex = pt->AddText("-0.002
-#pm0.07
-");
-   pt_LaTex = pt->AddText("0.35
+   pt->SetTextSize(26);
+   TText *pt_LaTex = pt->AddText("0.35
 #pm0.05
 ");
    pt->Draw();
@@ -63,8 +58,7 @@ void hDiff_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    pt->SetFillColor(0);
    pt->SetTextAlign(13);
    pt->SetTextFont(44);
-   pt->SetTextSize(20);
-   pt_LaTex = pt->AddText("#LTy#GT [mm]");
+   pt->SetTextSize(26);
    pt_LaTex = pt->AddText("#sigma [mm]");
    pt->Draw();
    c->Modified();

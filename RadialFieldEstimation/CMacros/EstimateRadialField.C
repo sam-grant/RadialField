@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <numeric>
 
 
 #include "RootInclude.h"
@@ -60,8 +61,11 @@ void DrawHist(TH1D *hist, std::string title, std::string fname) {
   hist->GetYaxis()->CenterTitle(1);
   hist->GetYaxis()->SetMaxDigits(4);
   hist->SetLineColor(1);
-  hist->SetFillStyle(3001);
-  hist->SetFillColor(kBlack);
+
+  //hist->GetXaxis()->SetRangeUser(.8, 1.5);
+
+  //hist->SetFillStyle(3001);
+  //hist->SetFillColor(kBlack);
   hist->Draw("HIST");
 
   ////////
@@ -72,19 +76,19 @@ void DrawHist(TH1D *hist, std::string title, std::string fname) {
   TString rms = Round(hist->GetRMS(), 3);
   TString rms_err = Round(hist->GetRMSError(), 1);
 
-  TPaveText *names = new TPaveText(0.65,0.69,0.70,0.89,"NDC");
+  TPaveText *names = new TPaveText(0.60,0.80,0.70,0.89,"NDC");
   names->SetTextAlign(13);
-  names->AddText("#LT#Deltay#GT [mm]");
+  //names->AddText("#LT#Deltay#GT [mm]");
   names->AddText("#sigma [mm]");
-  names->SetTextSize(20); // 26
+  names->SetTextSize(26); // 26
   names->SetTextFont(44);
   names->SetFillColor(0);
 
-  TPaveText *values = new TPaveText(0.70,0.69,0.89,0.89,"NDC");
+  TPaveText *values = new TPaveText(0.79,0.80,0.89,0.89,"NDC");
   values->SetTextAlign(33);
-  values->AddText(mean+"#pm"+mean_err);
+  //values->AddText(mean+"#pm"+mean_err);
   values->AddText(rms+"#pm"+rms_err);
-  values->SetTextSize(20); // 26
+  values->SetTextSize(26); // 26
   values->SetTextFont(44);
   values->SetFillColor(0);
 
@@ -105,11 +109,16 @@ void DrawHist(TH1D *hist, std::string title, std::string fname) {
 
 }
 
-TGraphErrors *GetAvgCaloYVsRun(vector<string> runs, string dataset, string inputDir) { 
 
-  // string basename = "caloBeamPositionPlots_"; 
-  // if(nearline) "gm2nearline_hists_run"; 
+/*Read input files and store a histogram of all cluster positions and a graph of average cluster
+position versus run in a tuple */
 
+std::tuple<TH1D*, TGraphErrors*> GetAvgCaloYPlots(vector<string> runs, string dataset, string inputDir) { 
+
+  // Total cluster-y position histogram
+  TH1D *hy_tot = new TH1D("hy_tot", ";y [mm]; Clusters",  150, 0, 150);
+
+  // Vectors for TGraphErrors 
   vector<double> y_; vector<double> ey_; 
   vector<double> x_; vector<double> ex_;
 
@@ -118,10 +127,9 @@ TGraphErrors *GetAvgCaloYVsRun(vector<string> runs, string dataset, string input
     string run = runs.at(i_run);
 
     // Regular method
-    // TFile *fin = TFile::Open((inputDir+"/caloBeamPositionPlots_"+run+".root").c_str());
     string inputName;
 
-    if(dataset=="Run1") { // } || dataset=="Run2" || dataset=="Run3") { 
+    if(dataset=="Run1") { 
 
       if(stod(run) <= 15991) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2/caloBeamPositionPlots_"+run+".root";
       else if(stod(run) >= 16355 && stod(run) <= 16514) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/caloBeamPositionPlots_"+run+".root";
@@ -165,124 +173,44 @@ TGraphErrors *GetAvgCaloYVsRun(vector<string> runs, string dataset, string input
 
     if(run=="17113") continue;
 
-    //cout<<"Getting file "<<inputName<<endl;
-
     TFile *fin = TFile::Open((inputName).c_str());
-
-    //cout<<"Got file "<<inputName<<", "<<fin<<endl;
 
     if(fin==0) continue;
 
     TH1D *hy = (TH1D*)fin->Get("CaloBeamPosition/clusterY");
 
-    double y = hy->GetMean(); double ey = hy->GetMeanError();
-
     if(hy->GetMean()==0) {
       fin->Close();
-      cout<<"Warning: run "+run+" has a mean y-position of zero. Skipping."<<endl;
+      //cout<<"Warning: run "+run+" has a mean y-position of zero. Skipping."<<endl;
       continue;
     }
 
-    y_.push_back(y); ey_.push_back(ey);
-    x_.push_back(std::stod(run)); ex_.push_back(0.);
-
-    //cout<<run<<","<<y<<","<<ey<<endl;
-  
-    fin->Close();
-
-  }
-
-  // Create TGraph 
-  TGraphErrors *gr = GenerateTGraphErrors(x_, y_, ex_, ey_); 
-
-  gr->Draw("AP*");
-
-  return gr;
-
-}
-
-TH1D *GetTotAvgCaloY(vector<string> runs, string dataset, string inputDir) { 
-
-  TH1D *hy_tot = new TH1D("hy_tot", ";y [mm]; Clusters",  150, 0, 150);
-
-  for( int i_run = 0; i_run < runs.size(); i_run++ ) {
-
-    string run = runs.at(i_run);
-
-    // Regular method
-    // TFile *fin = TFile::Open((inputDir+"/caloBeamPositionPlots_"+run+".root").c_str());
-    string inputName;
-
-    if(dataset=="Run1") { // } || dataset=="Run2" || dataset=="Run3") { 
-
-      if(stod(run) <= 15991) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 16355 && stod(run) <= 16514) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 16113 && stod(run) <= 16234) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_HighKick_5042B_GLdocDB20949-v3/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 17065 && stod(run) <= 17527) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/caloBeamPositionPlots_"+run+".root";
-
-    } else if(dataset=="Run2") {
-
-      if(stod(run) >= 24636 && stod(run) <= 24576) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2B/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 24683 && stod(run) <= 25045) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2C/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 25894 && stod(run) <= 26383) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 26478 && stod(run) <= 26611) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2E/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 26675 && stod(run) <= 26803) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2F/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 26999 && stod(run) <= 27042) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2G/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 27166 && stod(run) <= 27212) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2G/caloBeamPositionPlots_"+run+".root";
-
-    } else if(dataset=="Run3") { 
-
-      if(stod(run) >= 34184 && stod(run) <= 34618) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run3N_5207A/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 34702 && stod(run) <= 34920) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run3O_5207A/caloBeamPositionPlots_"+run+".root";
-
-    } else if(dataset=="All") { 
-
-      if(stod(run) <= 15991) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 16355 && stod(run) <= 16514) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 16113 && stod(run) <= 16234) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_HighKick_5042B_GLdocDB20949-v3/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 17065 && stod(run) <= 17527) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 24636 && stod(run) <= 24576) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2B/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 24683 && stod(run) <= 25045) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2C/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 25894 && stod(run) <= 26383) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2D/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 26478 && stod(run) <= 26611) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2E/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 26675 && stod(run) <= 26803) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2F/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 26999 && stod(run) <= 27042) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2G/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 27166 && stod(run) <= 27212) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run2G/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 34184 && stod(run) <= 34618) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run3N_5207A/caloBeamPositionPlots_"+run+".root";
-      else if(stod(run) >= 34702 && stod(run) <= 34920) inputName = "/pnfs/GM2/persistent/EDM/Data/Br/CaloBeamPos/gm2pro_daq_offline_dqc_run3O_5207A/caloBeamPositionPlots_"+run+".root";
-
-    }
-
-    inputName = inputDir+"/caloBeamPositionPlots_"+run+".root";
-
-    if(run=="17113") continue;
-
-
-    TFile *fin = TFile::Open((inputName).c_str());
-    
-    if(fin==0) continue;
-
-    TH1D *hy = (TH1D*)fin->Get("CaloBeamPosition/clusterY");
-
-    double y = hy->GetMean(); double ey = hy->GetMeanError();
-
-    if(hy->GetMean()==0) {
+    // "DQC" for the nearline. 
+    if(hy->GetEntries() < 1e4) {
       fin->Close();
-      cout<<"Warning: run "+run+" has a mean y-position of zero. Skipping."<<endl;
       continue;
     }
 
     // Add to master hist
     hy_tot->Add(hy); 
-  
+
+    double y = hy->GetMean(); double ey = hy->GetMeanError();
+
+    // Fill vectors
+    y_.push_back(y); ey_.push_back(ey);
+    x_.push_back(std::stod(run)); ex_.push_back(0.);
+
     fin->Close();
 
   }
 
-  return hy_tot;
+  // Create TGraphErrors 
+  TGraphErrors *gr = GenerateTGraphErrors(x_, y_, ex_, ey_); 
+  gr->Draw("AP*");
+
+  return make_tuple(hy_tot, gr);
 
 }
-
 
 tuple<double, double> GetRefPos(bool noBadCalos) { 
 
@@ -323,22 +251,58 @@ TH1D *GetDeltaY1D(TGraphErrors *input, double zero, double zero_err) {
 
   int n = input->GetN();
 
-  TH1D *hist = new TH1D("hist", "", 100, 0.8, 1.8);//100, -10, 10);
+  //TH1D *hist = new TH1D("hist", "", 100, 0, 1);//100, -10, 10);
+  TH1D *hist = new TH1D("hist", "", 2000, -100, 100);//100, -10, 10);
+  
+  // Formatted for Run-1a
 
+  // You will get underflow/overflows but we don't use this hist for anything except presentation
+  //TH1D *hist = new TH1D("hist", "", 20, 0.65, 1.65);
   for (int i_point = 0; i_point < n; i_point++) { 
-
-    hist->Fill(input->GetY()[i_point] - zero);
-
+    double entry = input->GetY()[i_point] - zero; 
+    hist->Fill(entry);
   } 
 
+  int underflow = hist->GetBinContent(hist->GetBin(0));
+  int overflow = hist->GetBinContent(hist->GetBin(hist->GetNbinsX()+1));
+
+  cout<<"underflow = "<<underflow<<endl;
+  cout<<"overflow = "<<overflow<<endl;
+
+//  if(underflow !=0 || overflow !=0) {
+//    cout<<"ERROR: DELTA Y HIST HAS "<<underflow<<" UNDERFLOWs AND "<<overflow<<" OVERFLOWS"<<endl;
+//    return 0;
+//  }
+
   return hist;
+
+}
+
+// Calculate this by hand to avoid running into overflow/underflow issues
+double StandardDeviation(TGraphErrors *input, double zero) { 
+
+  vector<double> v; 
+
+  for (int i_point(0); i_point < input->GetN(); i_point++)  {
+      double entry = input->GetY()[i_point] - zero; 
+      v.push_back(entry);
+  }
+
+  double sum = std::accumulate(v.begin(), v.end(), 0.0);
+  double mean = sum / v.size();
+
+  std::vector<double> diff(v.size());
+  std::transform(v.begin(), v.end(), diff.begin(), std::bind2nd(std::minus<double>(), mean));
+  double sq_sum = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0);
+  double stdev = std::sqrt(sq_sum / v.size());
+
+  return stdev;
 
 }
 
 double GetCaloAlignError(string dataset) { 
 
   TFile *fin = TFile::Open(("../Plots/CaloAlignment_"+dataset+".root").c_str());
-
   TH1D *hist = (TH1D*)fin->Get("hists/h_diff"); 
 
   return hist->GetRMS(); 
@@ -370,40 +334,7 @@ tuple<double, double, double, double, double> GetConversionParams() {
 
 }
 
-//double mm2ppm_BK(double y, double p0, double p1) {
-//  return y / ( (p1/QHV) + (p0) );
-//}
-//
-//double mm2ppm_err_BK(double y, double ey, double p0, double e0, double p1, double e1) {
-//  // Quotient rule
-//  double term1 = pow(1/((p1/QHV)+p0),2)*pow(ey,2);
-//  double term2 = pow((((p1/QHV)+p0)-(y/QHV))/pow(((p1/QHV)+p0),2),2)*pow(e1,2); // checked
-//  double term3 = pow(((p1/QHV)+p0-y)/pow(((p1/QHV)+p0),2),2)*pow(e0,2); // checked
-//  return sqrt(term1+term2+term3);
-//}
-
 double GetQHV(string dataset) { 
-
-
-  // TFile *input = TFile::Open("../Plots/QHV_vs_DS.root");
-  // TGraph *gr = (TGraph*)input->Get("plots/QHV_vs_DS");
-  // int bin = -1;
-  // if(dataset=="gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2") bin=0;
-  // else if(dataset=="gm2pro_daq_full_run1_HighKick_5042B_GLdocDB20949-v3") bin=1;
-  // else if(dataset=="gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3") bin=2;
-  // else if(dataset=="gm2pro_daq_full_run1_EndGame_5042B_GLdocDB20839-v1") bin=3;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2B") bin=4;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2C") bin=5; 
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2D") bin=6;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2E") bin=7;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2F") bin=8;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2G") bin=9;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run2H") bin=10;
-  // else if(dataset=="gm2pro_daq_offline_dqc_run3N_5207A") bin=11; 
-  // else if(dataset=="gm2pro_daq_offline_dqc_run3O_5207A") bin=12;
-  // else cout<<"No valid dataset provided"<<endl;
-  // input->Close();
-  // return QHV; 
 
   // See Run-1 BD paper table 1
   if(dataset=="gm2pro_daq_full_run1_HighKick_5042B_GLdocDB20949-v3" || dataset=="gm2pro_daq_full_run1_9d_5040A_GLdocDB17018-v3") return 20.3;
@@ -412,6 +343,8 @@ double GetQHV(string dataset) {
 }
 
 
+///////////////////////////////////////
+// These functions are no longer used 
 
 double mm2ppm(double QHV, double p0, double p1) {
   return 1 / ( (p1/QHV) + (p0) );
@@ -424,6 +357,9 @@ double mm2ppm_err(double QHV, double p0, double e0, double p1, double e1, double
   double c = 2*a*b*cov;
   return sqrt(pow(a,2)*pow(e0,2)+pow(b,2)*pow(e1,2)-c);
 }
+
+///////////////////////////////////////
+
 
 tuple<double, double> GetBrBkg() { 
 
@@ -451,7 +387,7 @@ tuple<double, double> GetBrBkg() {
 }
 
 // Including all errors (including correlated ones)
-TGraphErrors *GetBrVsRun_StatErr(TGraphErrors *input, double BrBkg, double k) { 
+TGraphErrors *GetBrVsRun_StatErr(TGraphErrors *input, double QHV, double BrBkg, double k, bool empircalEstimation) { 
 
   int n = input->GetN();
 
@@ -463,10 +399,18 @@ TGraphErrors *GetBrVsRun_StatErr(TGraphErrors *input, double BrBkg, double k) {
     x[i_point] = input->GetX()[i_point]; 
     ex[i_point] = 0.;
 
-    // Add the background field at zero point
-    y[i_point] = (input->GetY()[i_point] * k) + BrBkg; 
-    // Total error on dy
-    ey[i_point] = input->GetEY()[i_point] * k; 
+    if(empircalEstimation) { 
+      // Add the background field at zero point
+      y[i_point] = (input->GetY()[i_point] * k) + BrBkg; 
+      // Total error on dy
+      ey[i_point] = input->GetEY()[i_point] * k; 
+    } else { 
+      // Add the background field at zero point
+      y[i_point] = (input->GetY()[i_point] * QHV) + BrBkg; 
+      // Total error on dy
+      ey[i_point] = input->GetEY()[i_point] * QHV; 
+    }
+
 
   }
 
@@ -475,7 +419,7 @@ TGraphErrors *GetBrVsRun_StatErr(TGraphErrors *input, double BrBkg, double k) {
 }
 
 // Including all errors (including correlated ones)
-TGraphErrors *GetBrVsRun_AllErr(TGraphErrors *input, double BrBkg, double BrBkgErr, double k, double err_k, double err_align, double err_ref) { 
+TGraphErrors *GetBrVsRun_AllErr(TGraphErrors *input, double QHV, double BrBkg, double BrBkgErr, double k, double err_k, double err_align, double err_ref, bool empircalEstimation) { 
 
   int n = input->GetN();
 
@@ -487,14 +431,26 @@ TGraphErrors *GetBrVsRun_AllErr(TGraphErrors *input, double BrBkg, double BrBkgE
     x[i_point] = input->GetX()[i_point]; 
     ex[i_point] = 0.;
 
-    // Add the background field at zero point
-    y[i_point] = (input->GetY()[i_point] * k) + BrBkg; 
-    // Total error on dy
-    ey[i_point] = sqrt(pow(input->GetEY()[i_point],2) + pow(err_align, 2) + pow(err_ref, 2));   //mm2ppm_err(input->GetY()[i_point], input->GetErrorY(i_point), p0, e0, p1, e1);
-    // Total error on the shift in Br 
-    ey[i_point] = y[i_point] * sqrt( pow((err_k/k),2) + pow((ey[i_point]/input->GetY()[i_point]), 2) );
-    // Total error on the absolute Br
-    ey[i_point] = sqrt( pow(ey[i_point], 2) + pow(BrBkgErr, 2) );
+    if(empircalEstimation) { 
+      // Add the background field at zero point
+      y[i_point] = (input->GetY()[i_point] * k) + BrBkg; 
+      // Total error on dy
+      ey[i_point] = sqrt(pow(input->GetEY()[i_point],2) + pow(err_align, 2) + pow(err_ref, 2));
+      // Total error on the shift in Br 
+      ey[i_point] = y[i_point] * sqrt( pow((err_k/k),2) + pow((ey[i_point]/input->GetY()[i_point]), 2) );
+      // Total error on the absolute Br
+      ey[i_point] = sqrt( pow(ey[i_point], 2) + pow(BrBkgErr, 2) );
+    } else {
+      // Add the background field at zero point
+      y[i_point] = (input->GetY()[i_point] * QHV) + BrBkg; 
+      // Total error on dy
+      ey[i_point] = sqrt(pow(input->GetEY()[i_point],2) + pow(err_align, 2) + pow(err_ref, 2));
+      // Total error on the shift in Br 
+      ey[i_point] = y[i_point] * ey[i_point]/input->GetY()[i_point];
+      // Total error on the absolute Br
+      ey[i_point] = sqrt( pow(ey[i_point], 2) + pow(BrBkgErr, 2) );
+    }
+
   }
 
   return new TGraphErrors(n, x, y, ex, ey);
@@ -553,8 +509,9 @@ void DrawBrVsRun(TGraphErrors *statErr, TGraphErrors *allErr, std::string title,
 
 int main(int argc, char *argv[]) {
 
-  bool crossCheck = true;
+  bool write = true;
 
+  bool empircalEstimation = false;
   // Get inputs
   // If you're getting a logic error it's because you haven't provided an argument 
   string dataset = argv[1];//"gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2"; //  // "gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2"; //  // "gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2";//argv[1];
@@ -567,14 +524,29 @@ int main(int argc, char *argv[]) {
 
   string inputDir = "/pnfs/GM2/persistent/EDM/Data/Br/"+config+"/"+dataset;
 
-  // Get calo avg y vs run 
-  cout<<"\n**********************************\nGetting calo avg y vs run\n**********************************\n"<<endl;
-  TGraphErrors *gr_AvgCaloYvsRun = GetAvgCaloYVsRun(runs, dataset, inputDir);
-  DrawTGraphErrors(gr_AvgCaloYvsRun, ";Run number;#LTy_{Calo}#GT [mm]", "../Images/EstimateRadialField/AvgCaloYvsRun_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));  
+  cout<<"\n**********************************\nGetting calo avg y plots\n**********************************\n"<<endl;
 
-  cout<<"\n**********************************\nGetting total calo avg y\n**********************************\n"<<endl;
-  TH1D *h_AvgCaloYTot = GetTotAvgCaloY(runs, dataset, inputDir);
-  DrawHist(h_AvgCaloYTot, "", "../Images/EstimateRadialField/TotAvgCaloY_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
+  tuple<TH1D*, TGraphErrors*> AvgCaloYPlots = GetAvgCaloYPlots(runs, dataset, inputDir);
+  
+  TH1D *h_AvgCaloYTot =  get<0>(AvgCaloYPlots);
+  TGraphErrors *gr_AvgCaloYvsRun = get<1>(AvgCaloYPlots);
+
+  cout<<h_AvgCaloYTot<<endl;
+  cout<<gr_AvgCaloYvsRun<<endl;
+
+  // Get calo avg y vs run 
+//  cout<<"\n**********************************\nGetting calo avg y vs run\n**********************************\n"<<endl;
+//  TGraphErrors *gr_AvgCaloYvsRun = GetAvgCaloYVsRun(runs, dataset, inputDir);
+  DrawTGraphErrors(gr_AvgCaloYvsRun, ";Run number;#LTy_{Calo}#GT [mm]", "../Images/EstimateRadialField/gr_AvgCaloYvsRun_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));  
+//
+//  cout<<"\n**********************************\nGetting total calo avg y\n**********************************\n"<<endl;
+//  TH1D *h_AvgCaloYTot = GetTotAvgCaloY(runs, dataset, inputDir);
+  
+  // Clone to be safe
+  TH1D *h_AvgCaloYTot_clone = (TH1D*)h_AvgCaloYTot->Clone("h_AvgCaloYTot_clone");
+  DrawHist(h_AvgCaloYTot_clone, "", "../Images/EstimateRadialField/h_AvgCaloYTot_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
+
+  cout<<"Total calo average y = "<<h_AvgCaloYTot->GetMean()<<"±"<<h_AvgCaloYTot->GetMeanError()<<endl;
 
   // Get zero point
   cout<<"\n**********************************\nGetting zero point\n**********************************\n"<<endl;
@@ -594,20 +566,22 @@ int main(int argc, char *argv[]) {
 
   // Histogram of means
   TH1D *h_AvgCaloDeltaY = GetDeltaY1D(gr_AvgCaloYvsRun, ref, err_ref);
-  DrawHist(h_AvgCaloDeltaY, ";#Delta#LTy_{calo}#GT [mm];Runs / 0.01 mm","../Images/EstimateRadialField/h_deltaY_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
+  DrawHist(h_AvgCaloDeltaY, ";#Delta#LTy_{calo}#GT [mm];Runs / 0.2 mm","../Images/EstimateRadialField/h_deltaY_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
   
-  // All cluster average delta Y 
+  //for(int i(0); i<h_AvgCaloDeltaY->GetXaxis()->GetNbins(); i++) cout<<h_AvgCaloDeltaY->GetBinContent(i+1)<<endl;
+  // All cluster average delta Y for this DS
   double tot_deltaY =  h_AvgCaloYTot->GetMean() - ref; 
 
   // Errors on dy 
   double err_stat = h_AvgCaloYTot->GetMeanError();
-  double err_drift = h_AvgCaloDeltaY->GetRMS();
+
+  // cout<<h_AvgCaloDeltaY->GetMeanError()<<endl;
+  double err_drift = StandardDeviation(gr_AvgCaloYvsRun, ref);// h_AvgCaloDeltaY->GetRMS(); // h_AvgCaloYTot->GetRMS(); // h_AvgCaloDeltaY->GetRMS();
   double err_align = GetCaloAlignError(dataset);
 
   double err_tot_deltaY = sqrt(pow(err_stat,2)+pow(err_ref,2)+pow(err_drift,2)+pow(err_align,2));
 
   cout<<"\n*** Uncertainties on delta Y ***\nstat:\t"<<err_stat<<"\nref:\t"<<err_ref<<"\ndrift:\t"<<err_drift<<"\nalign:\t"<<err_align<<"\ntot:\t"<<err_tot_deltaY<<endl;
-
 
   cout<<"\n**********************************\nGetting QHV\n**********************************\n"<<endl;
 
@@ -629,24 +603,15 @@ int main(int argc, char *argv[]) {
   cout<<"\n**********************************\nGetting total shift in Br\n**********************************\n"<<endl;
 
   // This is ONLY possible is the reference point has a background field consitent with zero 
-  double tot_deltaBr = k * tot_deltaY;
-  double err_tot_deltaBr = tot_deltaBr * sqrt( pow((err_k/k),2) + pow((err_tot_deltaY/tot_deltaY), 2) );
+  double tot_deltaBr; //  = k * tot_deltaY;
+  double err_tot_deltaBr; // = tot_deltaBr * sqrt( pow((err_k/k),2) + pow((err_tot_deltaY/tot_deltaY), 2) );
 
-
-
-  cout<<"\n**********************************\nGetting total shift in Br (simplified method)\n**********************************\n"<<endl;
-
-  double tot_deltaBr2 = tot_deltaY*QHV;
-  double err_tot_deltaBr2 = tot_deltaBr * err_tot_deltaY/tot_deltaY; // ), 2) );
-
-/*  cout<<"tot_deltaY = "<<tot_deltaY<<endl;
-  cout<<"tot_deltaBr = "<<tot_deltaBr<<"±"<<err_tot_deltaBr<<endl;
-  cout<<"tot_deltaBr2 = "<<tot_deltaBr2<<"±"<<err_tot_deltaBr2<<endl;*/
-
-  if(crossCheck) {
-    cout<<"Running cross check on Br conversion"<<endl;
-    tot_deltaBr = tot_deltaBr2;
-    err_tot_deltaBr = err_tot_deltaBr2;
+  if(empircalEstimation) {
+    tot_deltaBr = k * tot_deltaY;
+    err_tot_deltaBr = tot_deltaBr * sqrt( pow((err_k/k),2) + pow((err_tot_deltaY/tot_deltaY), 2) );
+  } else { 
+    tot_deltaBr = QHV * tot_deltaY;
+    err_tot_deltaBr = tot_deltaBr * err_tot_deltaY/tot_deltaY; 
   }
 
   cout<<"Total delta Br:\t"<<tot_deltaBr<<"±"<<err_tot_deltaBr<<" ppm"<<endl;
@@ -668,11 +633,11 @@ int main(int argc, char *argv[]) {
 
   cout<<"\n**********************************\nPlotting absolute Br vs run\n**********************************\n"<<endl;
 
-  TGraphErrors *gr_AvgBrVsRun_StatErr = GetBrVsRun_StatErr(gr_AvgCaloDeltaY, BrBkg, k);
-  TGraphErrors *gr_AvgBrVsRun_AllErr = GetBrVsRun_AllErr(gr_AvgCaloDeltaY, BrBkg, BrBkgErr, k, err_k, err_align, err_ref);
+  TGraphErrors *gr_AvgBrVsRun_StatErr = GetBrVsRun_StatErr(gr_AvgCaloDeltaY, QHV, BrBkg, k, empircalEstimation);
+  TGraphErrors *gr_AvgBrVsRun_AllErr = GetBrVsRun_AllErr(gr_AvgCaloDeltaY, QHV, BrBkg, BrBkgErr, k, err_k, err_align, err_ref, empircalEstimation);
 
   string BrVsRunName = "../Images/EstimateRadialField/BrVsRun_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1); 
-  if(crossCheck) BrVsRunName += "_crossCheck";
+  if(empircalEstimation) BrVsRunName += "_crossCheck";
 
   DrawBrVsRun(gr_AvgBrVsRun_StatErr, gr_AvgBrVsRun_AllErr, ";Run number;#LTB_{r}#GT [ppm]", "../Images/EstimateRadialField/BrVsRun_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
 
@@ -681,7 +646,6 @@ int main(int argc, char *argv[]) {
   cout<<"\n**********************************\nStarting per calo analysis\n**********************************\n"<<endl;
 
   cout<<"TODO TODO TODO TODO TODO TODO"<<endl;
-  // 
 
   cout<<"\n**********************************\nWriting plots\n**********************************\n"<<endl;
 
@@ -689,11 +653,13 @@ int main(int argc, char *argv[]) {
 
   // Set output
   string outputName = "../Plots/radialFieldEstimationPlots_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1);// 
-  if(crossCheck) outputName += "_crossCheck.root";
+  if(empircalEstimation) outputName += "_crossCheck.root";
   else outputName += ".root";
+
+  if(!write) outputName = "delete_me.root";
+
   TFile *output = new TFile( outputName.c_str(), "RECREATE");
-
-
+  
   output->mkdir("RadialFieldValue"); output->mkdir("CaloAveragePlots"); output->mkdir("PerCaloPlots"); //output->mkdir("PerCaloMeanSubtracted");
 
   output->cd("RadialFieldValue");

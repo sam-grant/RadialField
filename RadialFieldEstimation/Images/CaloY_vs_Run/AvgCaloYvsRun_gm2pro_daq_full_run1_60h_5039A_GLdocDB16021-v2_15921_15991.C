@@ -1,7 +1,7 @@
 void AvgCaloYvsRun_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2_15921_15991()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Thu Jul  1 06:09:35 2021) by ROOT version 6.12/04
+//=========  (Thu Jan 27 10:05:20 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(15903.5,75.34547,16008.5,75.89323);
@@ -261,7 +261,7 @@ void AvgCaloYvsRun_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2_15921_15991()
    0.009243187};
    TGraphErrors *gre = new TGraphErrors(61,Graph0_fx1001,Graph0_fy1001,Graph0_fex1001,Graph0_fey1001);
    gre->SetName("Graph0");
-   gre->SetTitle(";Run number;#LTy_{All calos}#GT [mm]");
+   gre->SetTitle(";Run number;#LTy#GT [mm]");
    gre->SetFillStyle(1000);
    gre->SetMarkerStyle(20);
    
@@ -281,7 +281,7 @@ void AvgCaloYvsRun_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2_15921_15991()
    Graph_Graph1001->GetXaxis()->SetLabelSize(0.035);
    Graph_Graph1001->GetXaxis()->SetTitleOffset(1.1);
    Graph_Graph1001->GetXaxis()->SetTitleFont(42);
-   Graph_Graph1001->GetYaxis()->SetTitle("#LTy_{All calos}#GT [mm]");
+   Graph_Graph1001->GetYaxis()->SetTitle("#LTy#GT [mm]");
    Graph_Graph1001->GetYaxis()->CenterTitle(true);
    Graph_Graph1001->GetYaxis()->SetNdivisions(4000510);
    Graph_Graph1001->GetYaxis()->SetLabelFont(42);

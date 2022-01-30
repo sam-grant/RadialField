@@ -3,7 +3,7 @@ C++ = g++
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --libs)
 
-Target = ReadNearlineTrees.exe PlotCaloYvsRun.exe GetRefPos.exe EstimateRadialField.exe PlotBrvsDS.exe CheckCaloAlignment.exe OverlayEstimatedRadialFieldPlots.exe PlotBrvsRunAll.exe PlotBrvsDS2.exe
+Target = ReadNearlineTrees.exe PlotCaloYvsRun.exe GetRefPos.exe EstimateRadialField.exe PlotBrvsDS.exe CheckCaloAlignment.exe OverlayEstimatedRadialFieldPlots.exe PlotBrvsRunAll.exe PlotBrvsDS2.exe PrintUncertainties.exe
 
 all:$(Target)
 
@@ -33,5 +33,9 @@ OverlayEstimatedRadialFieldPlots.exe: OverlayEstimatedRadialFieldPlots.C
 
 PlotBrvsRunAll.exe: PlotBrvsRunAll.C
 	${C++} -o $@ PlotBrvsRunAll.C $(Objects) $(ROOTFLAGS) $(ROOTLIBS)
+
+PrintUncertainties.exe: PrintUncertainties.C
+	${C++} -o $@ PrintUncertainties.C $(Objects) $(ROOTFLAGS) $(ROOTLIBS)
+
 clean:
 	rm *exe

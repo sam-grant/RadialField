@@ -51,8 +51,8 @@ void DrawHist(TH1D *hist, std::string title, std::string fname) {
 	hist->GetYaxis()->CenterTitle(1);
 	hist->GetYaxis()->SetMaxDigits(4);
 	hist->SetLineColor(1);
-	hist->SetFillStyle(3001);
-	hist->SetFillColor(kBlack);
+	//hist->SetFillStyle(3001);
+	//hist->SetFillColor(kBlack);
 	hist->Draw("HIST");
 
 	////////
@@ -63,19 +63,21 @@ void DrawHist(TH1D *hist, std::string title, std::string fname) {
     TString rms = Round(hist->GetRMS(), 2);
   	TString rms_err = Round(hist->GetRMSError(), 1);
 
-	TPaveText *names = new TPaveText(0.65,0.69,0.70,0.89,"NDC");
+	//TPaveText *names = new TPaveText(0.60,0.80,0.70,0.89,"NDC");
+	TPaveText *names = new TPaveText(0.125,0.80,0.25,0.89,"NDC");
 	names->SetTextAlign(13);
-	names->AddText("#LTy#GT [mm]");
+	// names->AddText("Mean [mm]");
 	names->AddText("#sigma [mm]");
-  	names->SetTextSize(20); // 26
+  	names->SetTextSize(26); // 26
 	names->SetTextFont(44);
 	names->SetFillColor(0);
 
-	TPaveText *values = new TPaveText(0.70,0.69,0.89,0.89,"NDC");
+	//TPaveText *values = new TPaveText(0.79,0.80,0.89,0.89,"NDC");
+	TPaveText *values = new TPaveText(0.30,0.80,0.40,0.89,"NDC");
 	values->SetTextAlign(33);
-	values->AddText(mean+"#pm"+mean_err);
+	// values->AddText(mean+"#pm"+mean_err);
 	values->AddText(rms+"#pm"+rms_err);
-  	values->SetTextSize(20); // 26
+  	values->SetTextSize(26); // 26
 	values->SetTextFont(44);
 	values->SetFillColor(0);
 
@@ -145,9 +147,9 @@ void DrawGraphs(TGraphErrors *graph1, TGraphErrors *graph2, TFile *output, strin
 
 void Difference(TGraphErrors *graph1, TGraphErrors *graph2, TFile *output, string dataset, string name) {//td::string title, std::string fname) {
 
-
-//";Calo number;Run4(#LTy_{n}#GT #minus #LTy_{1}#GT) #minus Run1a(#LTy_{n}#GT #minus #LTy_{1}#GT) [mm]", "../Images/CaloAlignment/Diff_"+dataset);
-	TH1D *hist = new TH1D("hist", "", 20, -1, 1);
+	//";Calo number;Run4(#LTy_{n}#GT #minus #LTy_{1}#GT) #minus Run1a(#LTy_{n}#GT #minus #LTy_{1}#GT) [mm]", "../Images/CaloAlignment/Diff_"+dataset);
+//	TH1D *hist = new TH1D("hist", "", 24, -1.2, 1.2);
+	TH1D *hist = new TH1D("hist", "", 30, -1.5, 1.5);
 
 	vector<double> x_; vector<double> ex_;
 	vector<double> y_; vector<double> ey_;
@@ -164,13 +166,15 @@ void Difference(TGraphErrors *graph1, TGraphErrors *graph2, TFile *output, strin
 
 	TGraphErrors *graph = GenerateTGraphErrors(x_, y_, ex_, ey_);
 
+	graph->GetXaxis()->SetRangeUser(0, 24);
+	DrawGraph(graph, ";n;#Delta(#LTy_{n}#GT #minus #LTy_{n+1}#GT) [mm]", "../Images/CaloAlignment/grDiff_"+dataset);//, fname); 
 
-	DrawGraph(graph, ";Calo number;(#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-4} #minus (#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{"+name+"} [mm]", "../Images/CaloAlignment/grDiff_"+dataset);//, fname); 
 	graph->SetName("gr_diff");
 	output->cd("graphs");
 	graph->Write();
 
-	DrawHist(hist, ";(#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-4} #minus (#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{"+name+"} [mm];Calos / 0.1 mm", "../Images/CaloAlignment/hDiff_"+dataset);
+	//DrawHist(hist, ";(#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{Run-4} #minus (#LTy_{n}#GT #minus #LTy_{n+1}#GT)_{"+name+"} [mm];Calos / 0.1 mm", "../Images/CaloAlignment/hDiff_"+dataset);
+	DrawHist(hist, ";#Delta(#LTy_{n}#GT #minus #LTy_{n+1}#GT) [mm];Calorimeters / 0.1 mm", "../Images/CaloAlignment/hDiff_"+dataset);
 	output->cd("hists");
 	hist->SetName("h_diff");
 	hist->Write();
@@ -353,7 +357,7 @@ int main(int argc, char *argv[]) {
 	TGraphErrors *gr1 = CompRelativePositions("Run4_2021");
 	TGraphErrors *gr2 = CompRelativePositions(dataset);
 
-	DrawGraphs(gr1, gr2, output, "Run-4", name, ";Calo number, n;#LTy_{n+1}#GT #minus #LTy_{n}#GT [mm]", "../Images/CaloAlignment/Comp_"+dataset, -1, 2);
+	DrawGraphs(gr1, gr2, output, "Run-4", name, ";Calorimeter;#LTy_{n+1}#GT #minus #LTy_{n}#GT [mm]", "../Images/CaloAlignment/Comp_"+dataset, -2, 2);
 
 	Difference(gr1, gr2, output, dataset, name);//";Calo number;Run4(#LTy_{n}#GT #minus #LTy_{1}#GT) #minus Run1a(#LTy_{n}#GT #minus #LTy_{1}#GT) [mm]", "../Images/CaloAlignment/Diff_"+dataset);
 

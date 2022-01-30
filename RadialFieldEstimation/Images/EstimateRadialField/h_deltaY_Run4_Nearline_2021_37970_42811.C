@@ -1,7 +1,7 @@
 void h_deltaY_Run4_Nearline_2021_37970_42811()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Thu Jan 13 03:08:15 2022) by ROOT version 6.12/04
+//=========  (Sun Jan 30 09:53:29 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(0,0,1,1);
@@ -10,22 +10,23 @@ void h_deltaY_Run4_Nearline_2021_37970_42811()
    c->SetBorderSize(2);
    c->SetFrameBorderMode(0);
    
-   TH1D *hist__2 = new TH1D("hist__2","",100,0.8,1.8);
-   hist__2->SetBinContent(0,1600);
-   hist__2->SetBinContent(35,1);
-   hist__2->SetBinContent(53,1);
-   hist__2->SetBinContent(101,73);
-   hist__2->SetEntries(1675);
+   TH1D *hist__2 = new TH1D("hist__2","",2000,-100,100);
+   hist__2->SetBinContent(998,2);
+   hist__2->SetBinContent(999,35);
+   hist__2->SetBinContent(1000,658);
+   hist__2->SetBinContent(1001,827);
+   hist__2->SetBinContent(1002,29);
+   hist__2->SetBinContent(1003,2);
+   hist__2->SetBinContent(1004,1);
+   hist__2->SetEntries(1554);
    hist__2->SetStats(0);
-   hist__2->SetFillColor(1);
-   hist__2->SetFillStyle(3001);
    hist__2->GetXaxis()->SetTitle("#Delta#LTy_{calo}#GT [mm]");
    hist__2->GetXaxis()->CenterTitle(true);
    hist__2->GetXaxis()->SetLabelFont(42);
    hist__2->GetXaxis()->SetLabelSize(0.035);
    hist__2->GetXaxis()->SetTitleOffset(1.1);
    hist__2->GetXaxis()->SetTitleFont(42);
-   hist__2->GetYaxis()->SetTitle("Runs / 0.01 mm");
+   hist__2->GetYaxis()->SetTitle("Runs / 0.2 mm");
    hist__2->GetYaxis()->CenterTitle(true);
    hist__2->GetYaxis()->SetNdivisions(4000510);
    hist__2->GetYaxis()->SetLabelFont(42);
@@ -42,12 +43,9 @@ void h_deltaY_Run4_Nearline_2021_37970_42811()
    pt->SetFillColor(0);
    pt->SetTextAlign(33);
    pt->SetTextFont(44);
-   pt->SetTextSize(20);
-   TText *pt_LaTex = pt->AddText("1.23
-#pm0.06
-");
-   pt_LaTex = pt->AddText("0.0906
-#pm0.05
+   pt->SetTextSize(26);
+   TText *pt_LaTex = pt->AddText("0.051
+#pm0.0009
 ");
    pt->Draw();
    
@@ -55,8 +53,7 @@ void h_deltaY_Run4_Nearline_2021_37970_42811()
    pt->SetFillColor(0);
    pt->SetTextAlign(13);
    pt->SetTextFont(44);
-   pt->SetTextSize(20);
-   pt_LaTex = pt->AddText("#LT#Deltay#GT [mm]");
+   pt->SetTextSize(26);
    pt_LaTex = pt->AddText("#sigma [mm]");
    pt->Draw();
    c->Modified();

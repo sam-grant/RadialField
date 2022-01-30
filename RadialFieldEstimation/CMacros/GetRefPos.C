@@ -11,7 +11,7 @@ int n_calo = 24;
 void FitRefPos(TFile *input, TFile *output, string dataset) { 
 
 	if(dataset != "Run4_2021") { //} || dataset != "Run4_Jan") { 
-		cout<<"Not using correct dataset, returning"<<endl;
+		cout<<"Incorrect dataset, returning"<<endl;
 		return;
 	}
 
@@ -40,9 +40,7 @@ void FitRefPos(TFile *input, TFile *output, string dataset) {
 				TGraphErrors *gr_calo = (TGraphErrors*)input->Get(("PerCalo/y_vs_run_"+to_string(i_calo)).c_str());
 
 				y += gr_calo->GetY()[i_run];
-
-				// This is the simplest solution and therefore the best.
-				// Alt is to run over the nearline trees again.
+				
 				ey = sqrt( pow(ey, 2) + pow(gr_calo->GetEY()[i_run], 2) );
 
 				counter++;

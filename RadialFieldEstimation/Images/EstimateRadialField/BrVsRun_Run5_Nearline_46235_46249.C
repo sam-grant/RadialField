@@ -1,7 +1,7 @@
 void BrVsRun_Run5_Nearline_46235_46249()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Thu Jan 13 03:08:27 2022) by ROOT version 6.12/04
+//=========  (Sun Jan 30 09:55:25 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(46231.5,-4,46252.5,6);
@@ -21,14 +21,14 @@ void BrVsRun_Run5_Nearline_46235_46249()
    46246,
    46249};
    Double_t Graph0_fy1003[8] = {
-   0.2118529,
-   0.6301737,
-   0.2651274,
-   0.5531057,
-   0.7330866,
-   1.474618,
-   0.8929633,
-   1.446322};
+   0.1587386,
+   0.5426411,
+   0.2076298,
+   0.4719141,
+   0.6370865,
+   1.317607,
+   0.783809,
+   1.291638};
    Double_t Graph0_fex1003[8] = {
    0,
    0,
@@ -39,14 +39,14 @@ void BrVsRun_Run5_Nearline_46235_46249()
    0,
    0};
    Double_t Graph0_fey1003[8] = {
-   1.257349,
-   2.101976,
-   1.415426,
-   1.998334,
-   2.222277,
-   2.701648,
-   2.368956,
-   2.69244};
+   1.014822,
+   1.832956,
+   1.163673,
+   1.730626,
+   1.951619,
+   2.427166,
+   2.097074,
+   2.417785};
    TGraphErrors *gre = new TGraphErrors(8,Graph0_fx1003,Graph0_fy1003,Graph0_fex1003,Graph0_fey1003);
    gre->SetName("Graph0");
    gre->SetTitle(";Run number;#LTB_{r}#GT [ppm]");
@@ -97,14 +97,14 @@ void BrVsRun_Run5_Nearline_46235_46249()
    46246,
    46249};
    Double_t Graph1_fy1004[8] = {
-   0.2118529,
-   0.6301737,
-   0.2651274,
-   0.5531057,
-   0.7330866,
-   1.474618,
-   0.8929633,
-   1.446322};
+   0.1587386,
+   0.5426411,
+   0.2076298,
+   0.4719141,
+   0.6370865,
+   1.317607,
+   0.783809,
+   1.291638};
    Double_t Graph1_fex1004[8] = {
    0,
    0,
@@ -115,14 +115,14 @@ void BrVsRun_Run5_Nearline_46235_46249()
    0,
    0};
    Double_t Graph1_fey1004[8] = {
-   0.2003742,
-   0.2021154,
-   0.1954606,
-   0.2268662,
-   0.2473964,
-   0.2257335,
-   0.2081647,
-   0.2668961};
+   0.1838879,
+   0.1854859,
+   0.1793786,
+   0.2082002,
+   0.2270412,
+   0.2071608,
+   0.1910374,
+   0.2449365};
    gre = new TGraphErrors(8,Graph1_fx1004,Graph1_fy1004,Graph1_fex1004,Graph1_fey1004);
    gre->SetName("Graph1");
    gre->SetTitle("Graph");
@@ -133,8 +133,8 @@ void BrVsRun_Run5_Nearline_46235_46249()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1004 = new TH1F("Graph_Graph1004","Graph",100,46233.6,46250.4);
-   Graph_Graph1004->SetMinimum(0.01033077);
-   Graph_Graph1004->SetMaximum(1.883392);
+   Graph_Graph1004->SetMinimum(-0.1813217);
+   Graph_Graph1004->SetMaximum(1.692747);
    Graph_Graph1004->SetDirectory(0);
    Graph_Graph1004->SetStats(0);
 

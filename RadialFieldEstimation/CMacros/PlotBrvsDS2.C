@@ -1,4 +1,4 @@
-// This version has pretty colours (which was non-trivial)
+// This version has pretty colours 
 
 #include <iostream>
 #include <vector>
@@ -26,7 +26,7 @@ void DrawGraph(vector<TGraphErrors*> gr_, vector<string> labels_, std::string ti
 	gr_.at(0)->SetMarkerSize(0);
 	// gr_.at(0)->Draw();//"0AP");
 
-	TLegend *leg = new TLegend(.75, .59, .89, .89);
+	TLegend *leg = new TLegend(.79, .59, .89, .89);
 	leg->SetBorderSize(0);
 
 	vector<int> colors_ = {0, 4, 807, 8, 6, 2};
@@ -78,7 +78,6 @@ tuple<double, double> GetBr_OLD(TFile *input) {
 
 tuple<double, double> GetBr(TFile *input) { 
 
-
 	TTree *tree = (TTree*)input->Get("RadialFieldValue/resultTree");
 
 	double Br;
@@ -89,8 +88,6 @@ tuple<double, double> GetBr(TFile *input) {
 
 	tree->GetEntry(0);
 
-	cout<<"Br\t"<<Br<<"±"<<BrErr<<endl;
-
 	return make_tuple(Br, BrErr);
 
 }
@@ -98,7 +95,7 @@ tuple<double, double> GetBr(TFile *input) {
 
 int main() { /// int argc, char *argv[]) {
 
-	bool crossCheck = true;
+	bool crossCheck = false;
 
 	vector<string> datasets_ = {"Run-1", "Run-2", "Run-3", "Run-4", "Run-5"};
 
@@ -128,6 +125,8 @@ int main() { /// int argc, char *argv[]) {
 
 	int count = 0;
 	
+	cout<<"Dataset, Br, dBr"<<endl;
+
 	for(int i_ds = 0; i_ds < datasets_.size(); i_ds++) {
 
 		TGraphErrors *gr = new TGraphErrors();
@@ -142,6 +141,8 @@ int main() { /// int argc, char *argv[]) {
 			
 			// Get radial field
 			tuple<double, double> Br = GetBr(input);
+
+			cout<<names_.at(count)<<", "<<get<0>(Br)<<", "<<get<1>(Br)<<endl;
 
 			gr->SetPoint(i_file, count+1, get<0>(Br)); // x_.push_back(i_file+1); ex_.push_back(0.);
 			gr->SetPointError(i_file, 0, get<1>(Br));

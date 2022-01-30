@@ -1,7 +1,7 @@
 void BrVsDS2()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Tue Dec  7 12:25:04 2021) by ROOT version 6.12/04
+//=========  (Sun Jan 30 09:55:41 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(-2.05,-17.5,18.45,57.5);
@@ -134,20 +134,20 @@ void BrVsDS2()
    3,
    4};
    Double_t _fy1002[4] = {
-   22.19565,
-   22.72126,
-   29.60311,
-   34.27966};
+   20.33376,
+   21.00419,
+   27.37571,
+   31.42354};
    Double_t _fex1002[4] = {
    0,
    0,
    0,
    0};
    Double_t _fey1002[4] = {
-   7.297995,
-   8.172041,
-   8.242971,
-   8.781881};
+   6.671243,
+   7.537047,
+   7.581195,
+   8.339294};
    gre = new TGraphErrors(4,_fx1002,_fy1002,_fex1002,_fey1002);
    gre->SetName("");
    gre->SetTitle("");
@@ -157,8 +157,8 @@ void BrVsDS2()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1002 = new TH1F("Graph_Graph1002","",100,0.7,4.3);
-   Graph_Graph1002->SetMinimum(11.69798);
-   Graph_Graph1002->SetMaximum(45.91278);
+   Graph_Graph1002->SetMinimum(10.83757);
+   Graph_Graph1002->SetMaximum(42.3924);
    Graph_Graph1002->SetDirectory(0);
    Graph_Graph1002->SetStats(0);
 
@@ -190,13 +190,13 @@ void BrVsDS2()
    10,
    11};
    Double_t _fy1003[7] = {
-   11.29031,
-   14.85245,
-   17.31795,
-   12.68988,
-   12.62024,
-   14.7471,
-   16.39363};
+   10.32569,
+   13.59474,
+   15.85739,
+   11.61011,
+   11.5462,
+   13.49806,
+   15.00912};
    Double_t _fex1003[7] = {
    0,
    0,
@@ -206,13 +206,13 @@ void BrVsDS2()
    0,
    0};
    Double_t _fey1003[7] = {
-   3.547573,
-   3.739166,
-   6.04393,
-   3.518048,
-   3.515971,
-   4.95191,
-   4.972777};
+   3.320961,
+   3.589541,
+   5.725488,
+   3.291668,
+   3.317879,
+   4.498073,
+   4.55005};
    gre = new TGraphErrors(7,_fx1003,_fy1003,_fex1003,_fey1003);
    gre->SetName("");
    gre->SetTitle("");
@@ -226,8 +226,8 @@ void BrVsDS2()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1003 = new TH1F("Graph_Graph1003","",100,4.4,11.6);
-   Graph_Graph1003->SetMinimum(6.18082);
-   Graph_Graph1003->SetMaximum(24.9238);
+   Graph_Graph1003->SetMinimum(5.54691);
+   Graph_Graph1003->SetMaximum(23.0407);
    Graph_Graph1003->SetDirectory(0);
    Graph_Graph1003->SetStats(0);
 
@@ -254,14 +254,14 @@ void BrVsDS2()
    12,
    13};
    Double_t _fy1004[2] = {
-   10.86647,
-   10.78958};
+   9.936719,
+   9.866153};
    Double_t _fex1004[2] = {
    0,
    0};
    Double_t _fey1004[2] = {
-   4.966378,
-   5.397335};
+   4.589006,
+   4.966837};
    gre = new TGraphErrors(2,_fx1004,_fy1004,_fex1004,_fey1004);
    gre->SetName("");
    gre->SetTitle("");
@@ -271,8 +271,8 @@ void BrVsDS2()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1004 = new TH1F("Graph_Graph1004","",100,11.9,13.1);
-   Graph_Graph1004->SetMinimum(4.312774);
-   Graph_Graph1004->SetMaximum(17.26638);
+   Graph_Graph1004->SetMinimum(3.905948);
+   Graph_Graph1004->SetMaximum(15.82636);
    Graph_Graph1004->SetDirectory(0);
    Graph_Graph1004->SetStats(0);
 
@@ -298,11 +298,11 @@ void BrVsDS2()
    Double_t _fx1005[1] = {
    14};
    Double_t _fy1005[1] = {
-   -0.4443703};
+   -0.4435097};
    Double_t _fex1005[1] = {
    0};
    Double_t _fey1005[1] = {
-   1.951419};
+   1.174787};
    gre = new TGraphErrors(1,_fx1005,_fy1005,_fex1005,_fey1005);
    gre->SetName("");
    gre->SetTitle("");
@@ -312,8 +312,8 @@ void BrVsDS2()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1005 = new TH1F("Graph_Graph1005","",100,13.9,15.1);
-   Graph_Graph1005->SetMinimum(-2.786073);
-   Graph_Graph1005->SetMaximum(1.897332);
+   Graph_Graph1005->SetMinimum(-1.853254);
+   Graph_Graph1005->SetMaximum(0.9662347);
    Graph_Graph1005->SetDirectory(0);
    Graph_Graph1005->SetStats(0);
 
@@ -339,11 +339,11 @@ void BrVsDS2()
    Double_t _fx1006[1] = {
    15};
    Double_t _fy1006[1] = {
-   0.7154093};
+   0.6208637};
    Double_t _fex1006[1] = {
    0};
    Double_t _fey1006[1] = {
-   3.457959};
+   3.207755};
    gre = new TGraphErrors(1,_fx1006,_fy1006,_fex1006,_fey1006);
    gre->SetName("");
    gre->SetTitle("");
@@ -353,8 +353,8 @@ void BrVsDS2()
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1006 = new TH1F("Graph_Graph1006","",100,14.9,16.1);
-   Graph_Graph1006->SetMinimum(-3.434141);
-   Graph_Graph1006->SetMaximum(4.86496);
+   Graph_Graph1006->SetMinimum(-3.228443);
+   Graph_Graph1006->SetMaximum(4.47017);
    Graph_Graph1006->SetDirectory(0);
    Graph_Graph1006->SetStats(0);
 
@@ -377,7 +377,7 @@ void BrVsDS2()
    
    gre->Draw("p ");
    
-   TLegend *leg = new TLegend(0.75,0.59,0.89,0.89,NULL,"brNDC");
+   TLegend *leg = new TLegend(0.79,0.59,0.89,0.89,NULL,"brNDC");
    leg->SetBorderSize(0);
    leg->SetLineColor(1);
    leg->SetLineStyle(1);

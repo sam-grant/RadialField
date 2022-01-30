@@ -43,6 +43,70 @@ inline bool fileExists (const std::string& name) {
   return (stat (name.c_str(), &buffer) == 0); 
 }
 
+void DrawHist(TH1D *hist, std::string title, std::string fname) { 
+
+  TCanvas *c = new TCanvas("c","c",800,600);
+
+  hist->SetTitle(title.c_str());
+
+  hist->SetStats(0);
+      
+  hist->GetXaxis()->SetTitleSize(.04);
+  hist->GetYaxis()->SetTitleSize(.04);
+  hist->GetXaxis()->SetTitleOffset(1.1);
+  hist->GetYaxis()->SetTitleOffset(1.1);
+  hist->GetXaxis()->CenterTitle(1);
+  hist->GetYaxis()->CenterTitle(1);
+  hist->GetYaxis()->SetMaxDigits(4);
+  hist->SetLineColor(1);
+
+  hist->GetXaxis()->SetRangeUser(75.2, 76);
+
+  //hist->SetFillStyle(3001);
+  //hist->SetFillColor(kBlack);
+  hist->Draw("HIST");
+
+  ////////
+
+  TString mean = Round(hist->GetMean(), 3);
+  TString mean_err = Round(hist->GetMeanError(), 1);
+
+  TString rms = Round(hist->GetRMS(), 3);
+  TString rms_err = Round(hist->GetRMSError(), 1);
+
+  TPaveText *names = new TPaveText(0.60,0.775,0.70,0.89,"NDC");
+  names->SetTextAlign(13);
+  names->AddText("Mean [mm]");
+  names->AddText("#sigma [mm]");
+  names->SetTextSize(23); // 26
+  names->SetTextFont(44);
+  names->SetFillColor(0);
+
+  TPaveText *values = new TPaveText(0.79,0.775,0.89,0.89,"NDC");
+  values->SetTextAlign(33);
+  values->AddText(mean+"#pm"+mean_err);
+  values->AddText(rms+"#pm"+rms_err);
+  values->SetTextSize(23); // 26
+  values->SetTextFont(44);
+  values->SetFillColor(0);
+
+  values->Draw("same");
+  names->Draw("same");
+
+  ////////
+
+  //c->SetRightMargin(0.13);
+  
+  c->SaveAs((fname+".C").c_str());
+  c->SaveAs((fname+".pdf").c_str());
+  c->SaveAs((fname+".png").c_str());
+
+  delete c;
+
+  return;
+
+}
+
 void GetCaloYVsRun(vector<string> runs, string dataset, TFile *output) { 
 
   int n_calo = 24;
@@ -52,7 +116,7 @@ void GetCaloYVsRun(vector<string> runs, string dataset, TFile *output) {
   // Hist of all cluster positions
   TH1D *h_yTot = new TH1D("h_yTot", "", 150, 0, 150);
   // Hist of run averages 
-  TH1D *h_yRunAvg = new TH1D("h_yRunAvg", "", 15000, 0, 150);
+  TH1D *h_yRunAvg = new TH1D("h_yRunAvg", "", 20, 75, 76);
 
   vector<double> xAvg_; vector<double> exAvg_;
   vector<double> yAvg_; vector<double> eyAvg_; 
@@ -186,9 +250,12 @@ void GetCaloYVsRun(vector<string> runs, string dataset, TFile *output) {
   avg_stat_error = avg_stat_error/eyAvg_.size();
   cout<<"Mean stat error\t"<<avg_stat_error<<endl;
 
-  DrawTGraphErrors(grAvg, ";Run number;#LTy_{All calos}#GT [mm]", "../Images/CaloY_vs_Run/AvgCaloYvsRun_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
+  DrawTGraphErrors(grAvg, ";Run number;#LTy#GT [mm]", "../Images/CaloY_vs_Run/AvgCaloYvsRun_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
   DrawTH1(h_yTot, ";y [mm];Clusters", "../Images/CaloY_vs_Run/h_yTot_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
-  DrawTH1(h_yRunAvg, ";#LTy_{All calos}#GT [mm];Runs", "../Images/CaloY_vs_Run/h_yRunAvg_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
+  
+  //DrawTH1(h_yRunAvg, ";#LTy#GT [mm];Runs", "../Images/CaloY_vs_Run/h_yRunAvg_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
+
+  DrawHist(h_yRunAvg, ";#LTy#GT [mm];Runs / 0.05 mm", "../Images/CaloY_vs_Run/h_yRunAvg_"+dataset+"_"+runs.at(0)+"_"+runs.at(runs.size()-1));
   
   grAvg->SetName("y_vs_run");
   h_yTot->SetName("h_yTot");
@@ -275,7 +342,7 @@ int main(int argc, char *argv[]) { //) {
   vector<string> runs = csvReader("../txt/"+dataset+".txt");
 
   // Run & plot
-  // GetAvgCaloYVsRun(runs, dataset, output);
+  //GetAvgCaloYVsRun(runs, dataset, output);
   GetCaloYVsRun(runs, dataset, output);
 
   cout<<"\nWritten plots to "<<outputName<<endl;

@@ -1,7 +1,7 @@
 void AvgCaloYvsRun_gm2pro_daq_offline_dqc_run2E_26478_26611()
 {
 //=========Macro generated from canvas: c/c
-//=========  (Thu Jan 13 02:56:01 2022) by ROOT version 6.12/04
+//=========  (Mon Jan 17 05:16:43 2022) by ROOT version 6.12/04
    TCanvas *c = new TCanvas("c", "c",0,0,800,600);
    c->SetHighLightColor(2);
    c->Range(26444.75,74.93265,26644.25,75.49081);

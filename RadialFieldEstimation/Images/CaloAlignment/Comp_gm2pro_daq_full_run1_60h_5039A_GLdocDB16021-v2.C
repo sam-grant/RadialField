@@ -1,10 +1,10 @@
 void Comp_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
 {
 //=========Macro generated from canvas: gr_comp/c
-//=========  (Fri Jul  2 05:18:54 2021) by ROOT version 6.12/04
+//=========  (Thu Jan 27 10:11:36 2022) by ROOT version 6.12/04
    TCanvas *gr_comp = new TCanvas("gr_comp", "c",0,0,800,600);
    gr_comp->SetHighLightColor(2);
-   gr_comp->Range(-3.15,-1.375,28.35,2.375);
+   gr_comp->Range(-3.15,-2.5,28.35,2.5);
    gr_comp->SetFillColor(0);
    gr_comp->SetBorderMode(0);
    gr_comp->SetBorderSize(2);
@@ -109,12 +109,12 @@ void Comp_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    0.003634978};
    TGraphErrors *gre = new TGraphErrors(23,Run-4_fx1001,Run-4_fy1001,Run-4_fex1001,Run-4_fey1001);
    gre->SetName("Run-4");
-   gre->SetTitle(";Calo number, n;#LTy_{n+1}#GT #minus #LTy_{n}#GT [mm]");
+   gre->SetTitle(";Calorimeter;#LTy_{n+1}#GT #minus #LTy_{n}#GT [mm]");
    gre->SetFillStyle(1000);
    gre->SetMarkerStyle(20);
    
    TH1F *Graph_Graph1001 = new TH1F("Graph_Graph1001","",100,0,25.2);
-   Graph_Graph1001->SetMinimum(-1);
+   Graph_Graph1001->SetMinimum(-2);
    Graph_Graph1001->SetMaximum(2);
    Graph_Graph1001->SetDirectory(0);
    Graph_Graph1001->SetStats(0);
@@ -123,7 +123,7 @@ void Comp_gm2pro_daq_full_run1_60h_5039A_GLdocDB16021-v2()
    TColor *color; // for color definition with alpha
    ci = TColor::GetColor("#000099");
    Graph_Graph1001->SetLineColor(ci);
-   Graph_Graph1001->GetXaxis()->SetTitle("Calo number, n");
+   Graph_Graph1001->GetXaxis()->SetTitle("Calorimeter");
    Graph_Graph1001->GetXaxis()->CenterTitle(true);
    Graph_Graph1001->GetXaxis()->SetLabelFont(42);
    Graph_Graph1001->GetXaxis()->SetLabelSize(0.035);
