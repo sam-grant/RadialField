@@ -2,9 +2,11 @@
 
 - Direct measurement code can be found in **EDM**
 
-- Radial field estimation code can be found in `RadialFieldEstimation`, which may be operated in the following way: 
+- `BeamGunSim` comprises a failed attempt to make a proper go at a radial field simulation using the beam gun. 
 
-  0)  
+- `GridSubmit` is a directory used for submission to FermiGrid (for making beam position histograms). 
+
+- Radial field estimation code can be found in `RadialFieldEstimation`, which may be operated in the following way: 
  
   1) `CMacros/ReadNearlineTrees.C` is for producing beam position histograms from the nearline if you want results quickly. If you have a production dataset to work with use `gm2analyses/EDM/fcl/RunCaloBeamPositionPlots.fcl`. I have a SAM dataset for the beam position histograms made already, called `caloBeamPosPlots_EDM`. Might be worth updating it as we add more datasets. The plots themselves are stored on `/pnfs/GM2/persistent/EDM/Data`.
   
