@@ -4,9 +4,9 @@
 
 - Radial field estimation code can be found in `RadialFieldEstimation`, which may be operated in the following way: 
 
-  0) I have a SAM dataset for the beam position histograms, called `caloBeamPosPlots_EDM`. Might be worth updating it as we add more datasets.  
+  0)  
  
-  1) `CMacros/ReadNearlineTrees.C` is for producing beam position histograms from the nearline if you want results quickly. If you have a production dataset to work with use `gm2analyses/EDM/fcl/RunCaloBeamPositionPlots.fcl`.
+  1) `CMacros/ReadNearlineTrees.C` is for producing beam position histograms from the nearline if you want results quickly. If you have a production dataset to work with use `gm2analyses/EDM/fcl/RunCaloBeamPositionPlots.fcl`. I have a SAM dataset for the beam position histograms made already, called `caloBeamPosPlots_EDM`. Might be worth updating it as we add more datasets. The plots themselves are stored on `/pnfs/GM2/persistent/EDM/Data`.
   
   2) `CMacros/PlotCaloYvsRun.C` does what it's called: it produces a ROOT file with graphs of <y> vs run, and the same for individual calos. It's controlled by `Scripts/Run_CaloY_vs_Run_All_DS.sh`, which feeds it the name of the dataset as an argument. For re-use, the `C++` macro will need to be updated around line 174, which is just a case of adding the run ranges for the new datasets. It will also need new text files listing the runs in each dataset, which can be generated with `Scripts/makeRunList.txt`
  
