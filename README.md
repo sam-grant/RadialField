@@ -1,4 +1,4 @@
-# Radial magnetic field estimation 
+# The radial magnetic field analysis
 
 - Direct measurement code can be found in **EDM**
 
