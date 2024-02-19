@@ -20,7 +20,7 @@
  
   6) `CMacros/PlotBrvsDS2.C` takes the ROOT files produced by `CMacos/EstimateRadialField.C` and plots the average <Br> in nice graph. `CMacros/PlotBrvsDS.C` also works but I prefer this one.
  
-  7) `CMacros/PrintUncertainties.C` is a sloppy re-write of `CMacos/EstimateRadialField.C` which just print contributions to the uncertainty on Br. 
+  7) `CMacros/PrintUncertainties.C` is a re-write of `CMacos/EstimateRadialField.C` which just print contributions to the uncertainty on Br. 
 
 
 
